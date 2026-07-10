@@ -622,12 +622,12 @@
     if(!supabaseReady()) return;
     try{
       const res = await fetch(
-        SUPABASE_URL + '/rest/v1/congrats?select=name,message,created_at&order=created_at.desc&_=' + Date.now(),
+        SUPABASE_URL + '/rest/v1/congrats?select=name,message,created_at&order=created_at.desc',
         {
           headers: {
             'apikey': SUPABASE_ANON_KEY
           },
-          cache: 'no-store'
+          cache: 'no-cache'
         }
       );
       if(!res.ok) return;
@@ -635,34 +635,41 @@
       if(!Array.isArray(list)) return;
 
       const wall = document.getElementById('congratsWall');
+      
+      // إذا لم توجد رسائل
       if(!list.length){
-        wall.innerHTML = '<p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>';
+        if(!document.getElementById('congratsEmpty')){
+          wall.innerHTML = '<p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>';
+        }
         return;
       }
 
-      // إذا كان هذا التحميل الأول، عرّض جميع التهنئات
-      if(!initialLoadDone){
+      // في أول تحميل أو إذا كان الحائط فارغاً، نعرض كل شيء
+      if(!initialLoadDone || wall.querySelector('.congrats-empty')){
         wall.innerHTML = '';
         list.forEach(c => {
           congratsSeen.add(c.created_at);
-          addCongratsToWall({ name: c.name, message: c.message });
+          const div = document.createElement('div');
+          div.className = 'congrats-item';
+          div.innerHTML = `<div class="cg-name">${escapeHtml(c.name)}</div><div class="cg-msg">${escapeHtml(c.message)}</div>`;
+          wall.appendChild(div); // استخدام appendChild لعرضها بالترتيب التنازلي (الأحدث فوق) لأن القائمة أصلاً مرتبة desc
         });
         initialLoadDone = true;
-        return;
+      } else {
+        // التحميلات الدورية: نضيف الجديد فقط في البداية
+        const newItems = list.filter(c => !congratsSeen.has(c.created_at));
+        if(newItems.length > 0){
+          newItems.slice().reverse().forEach(c => {
+            congratsSeen.add(c.created_at);
+            const div = document.createElement('div');
+            div.className = 'congrats-item';
+            div.innerHTML = `<div class="cg-name">${escapeHtml(c.name)}</div><div class="cg-msg">${escapeHtml(c.message)}</div>`;
+            wall.prepend(div);
+          });
+        }
       }
-
-      // بعد التحميل الأول، عرّض فقط التهنئات الجديدة
-      const empty = document.getElementById('congratsEmpty');
-      if(empty) empty.remove();
-
-      const newItems = list.filter(c => !congratsSeen.has(c.created_at));
-      if(!newItems.length) return;
-      newItems.slice().reverse().forEach(c => {
-        congratsSeen.add(c.created_at);
-        addCongratsToWall({ name: c.name, message: c.message });
-      });
     }catch(err){
-      // مفيش نت أو الإعدادات لسه متظبطش - سيب الحائط زي ما هو
+      console.error("Error loading congrats:", err);
     }
   }
   window.addEventListener('DOMContentLoaded', loadCongratsWall);
