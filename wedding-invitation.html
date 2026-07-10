@@ -515,15 +515,42 @@
 
   function addToCalendar(){
     const title = 'حفل زفاف محمد وتقى';
-    const details = 'قاعة لاروز - حديقة الحلمية للقوات المسلحة';
+    const details = 'ننتظركم بكل حب في حفل زفافنا بقاعة لاروز';
     const location = 'قاعة لاروز - حديقة الحلمية للقوات المسلحة';
-    const dates = '20261030T170000Z/20261030T220000Z'; // 7:00م - 10:00م بتوقيت مصر (UTC+2)
-    const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
-      + '&text=' + encodeURIComponent(title)
-      + '&dates=' + dates
-      + '&details=' + encodeURIComponent(details)
-      + '&location=' + encodeURIComponent(location);
-    window.open(url, '_blank');
+    const startDate = '20261030T170000Z'; // 7:00 PM GMT+2 (Egypt Time)
+    const endDate = '20261030T220000Z';   // 10:00 PM GMT+2 (Egypt Time)
+    
+    // رابط تقويم جوجل (يعمل في المتصفح مباشرة)
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+    
+    // محتوى ملف iCal (لأجهزة الموبايل والآيفون)
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:${startDate}
+DTEND:${endDate}
+SUMMARY:${title}
+DESCRIPTION:${details}
+LOCATION:${location}
+END:VEVENT
+END:VCALENDAR`;
+
+    // الكشف عن نوع الجهاز
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // للموبايل: تحميل ملف iCal لضمان الإضافة للتقويم الافتراضي للجهاز
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'wedding-event.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // للكمبيوتر: فتح تقويم جوجل
+      window.open(googleUrl, '_blank');
+    }
   }
 
   // ========= إرسال البيانات (Supabase) =========
