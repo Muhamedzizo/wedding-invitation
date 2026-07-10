@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>دعوة زفاف محمد وتقى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF5EA;
+    --cream-deep:#F2E9D8;
+    --green:#1E3A2B;
+    --green-soft:#2F513C;
+    --gold:#C9A227;
+    --gold-soft:#E4C9B0;
+    --charcoal:#2B2620;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'Tajawal', sans-serif;
+    overflow-x:hidden;
+  }
+  .display{ font-family:'Aref Ruqaa', serif; }
+
+  /* ---------- Ornamental divider ---------- */
+  .divider{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    margin:28px auto; width:100%; max-width:320px;
+  }
+  .divider .line{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .divider .diamond{ width:8px; height:8px; background:var(--gold); transform:rotate(45deg); }
+
+  /* ---------- Splash Screen ---------- */
+  #splash{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(201,162,39,0.10), transparent 60%),
+      var(--cream);
+    padding:24px;
+    cursor:pointer;
+  }
+  .frame{
+    position:relative;
+    width:280px; height:280px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .frame svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .frame .monogram{
+    position:relative; z-index:2;
+    width:170px; height:170px;
+    border-radius:50%;
+    background:linear-gradient(145deg, var(--green), var(--green-soft));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 30px rgba(30,58,43,0.35);
+    animation: breathe 4s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.03); }
+  }
+  .monogram span{
+    font-family:'Aref Ruqaa', serif;
+    font-size:52px;
+    color:var(--gold-soft);
+  }
+  #splash h1{
+    font-size:2.4rem;
+    color:var(--green);
+    margin-top:28px;
+    letter-spacing:1px;
+  }
+  #splash .tap{
+    color:var(--gold);
+    font-size:1.15rem;
+    margin-top:10px;
+    letter-spacing:.5px;
+  }
+  #splash .sub{
+    color:var(--green-soft);
+    font-size:.95rem;
+    margin-top:6px;
+    opacity:.8;
+  }
+  .splash-content{ text-align:center; animation: fadeUp 1s ease; }
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- Main content ---------- */
+  #main{ display:none; }
+  #main.show{ display:block; animation:fadeUp .8s ease; }
+
+  .music-btn{
+    position:fixed; top:16px; left:16px; z-index:50;
+    width:44px; height:44px; border-radius:50%;
+    background:var(--green); color:var(--gold-soft);
+    border:none; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 14px rgba(30,58,43,0.3);
+    cursor:pointer;
+  }
+
+  .wrap{ max-width:640px; margin:0 auto; padding:56px 20px 32px; }
+
+  header.names{ text-align:center; margin-bottom:8px; }
+  header.names .eyebrow{ color:var(--gold); letter-spacing:2px; font-size:.95rem; margin-bottom:10px; }
+  header.names h1{
+    font-family:'Aref Ruqaa', serif;
+    font-size:3.2rem;
+    color:var(--green);
+    line-height:1.2;
+  }
+  header.names .amp{ color:var(--gold); font-size:1.6rem; margin:4px 0; }
+  header.names .tagline{ color:var(--charcoal); font-size:1.05rem; margin-top:12px; opacity:.85; }
+
+  .card{
+    background:#fff;
+    border:1px solid var(--gold-soft);
+    border-radius:6px;
+    box-shadow:0 10px 40px rgba(30,58,43,0.08);
+    margin-bottom:28px;
+    overflow:hidden;
+  }
+  .card .card-head{
+    background:linear-gradient(135deg, var(--green), var(--green-soft));
+    color:var(--gold-soft);
+    text-align:center;
+    padding:16px;
+    font-family:'Aref Ruqaa', serif;
+    font-size:1.5rem;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .card .card-body{ padding:28px 22px; }
+
+  .detail-row{ text-align:center; padding:14px 0; }
+  .detail-row + .detail-row{ border-top:1px dashed var(--gold-soft); }
+  .detail-row .label{ color:var(--gold); font-size:.85rem; letter-spacing:1px; margin-bottom:6px; }
+  .detail-row .value{ color:var(--green); font-size:1.25rem; font-weight:700; }
+  .detail-row .value.small{ font-size:1.05rem; font-weight:500; }
+
+  .countdown{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:6px; }
+  .countdown .box{
+    background:var(--cream-deep);
+    border:1px solid var(--gold-soft);
+    border-radius:6px;
+    text-align:center;
+    padding:14px 4px;
+  }
+  .countdown .box .num{ font-size:1.7rem; font-weight:900; color:var(--green); font-variant-numeric:tabular-nums; }
+  .countdown .box .lbl{ font-size:.78rem; color:var(--gold); margin-top:4px; }
+
+  .map-frame{ width:100%; height:340px; border:1px solid var(--gold-soft); border-radius:6px; overflow:hidden; }
+  .map-frame iframe{ width:100%; height:100%; border:0; display:block; }
+  .map-note{ text-align:center; color:var(--green-soft); font-size:.85rem; margin-top:10px; }
+
+  .actions{ display:flex; flex-direction:column; gap:12px; margin-bottom:36px; }
+  .btn{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%; padding:16px; border:none; border-radius:6px;
+    font-family:'Tajawal', sans-serif; font-size:1.05rem; font-weight:700;
+    cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.12); }
+  .btn svg{ width:20px; height:20px; }
+  .btn.primary{ background:var(--green); color:var(--gold-soft); }
+  .btn.gold{ background:var(--gold); color:#fff; }
+  .btn.soft{ background:var(--gold-soft); color:var(--green); }
+  .btn.outline{ background:#fff; color:var(--green); border:1px solid var(--gold-soft); }
+
+  footer{ text-align:center; padding:28px 0 40px; color:var(--green-soft); }
+  footer p:first-child{ font-family:'Aref Ruqaa', serif; font-size:1.4rem; color:var(--green); margin-bottom:6px; }
+  footer p.credit{ font-size:.75rem; opacity:.55; margin-top:10px; }
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--green); color:#fff; padding:12px 22px; border-radius:30px;
+    font-size:.9rem; opacity:0; transition:all .3s ease; z-index:100; white-space:nowrap;
+    box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:420px){
+    header.names h1{ font-size:2.4rem; }
+    .countdown .box .num{ font-size:1.3rem; }
+  }
+
+  /* ---------- Congrats Wall ---------- */
+  .congrats-wall{ display:flex; flex-direction:column; gap:12px; max-height:340px; overflow-y:auto; }
+  .congrats-empty{ text-align:center; color:var(--green-soft); opacity:.7; font-size:.95rem; padding:12px 0; }
+  .congrats-item{
+    background:var(--cream-deep); border:1px solid var(--gold-soft); border-radius:8px;
+    padding:14px 16px;
+  }
+  .congrats-item .cg-name{ color:var(--green); font-weight:700; font-size:.95rem; margin-bottom:4px; }
+  .congrats-item .cg-msg{ color:var(--charcoal); font-size:.9rem; line-height:1.6; }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(30,58,43,0.45);
+    display:none; align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal-box{
+    background:#fff; border-radius:10px; padding:26px 22px; width:100%; max-width:380px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.25); position:relative;
+  }
+  .modal-box h3{ font-family:'Aref Ruqaa', serif; color:var(--green); font-size:1.4rem; text-align:center; margin-bottom:18px; }
+  .modal-box label{ display:block; color:var(--gold); font-size:.85rem; margin-bottom:6px; }
+  .modal-box input, .modal-box textarea, .modal-box select{
+    width:100%; padding:11px 12px; border:1px solid var(--gold-soft); border-radius:6px;
+    font-family:'Tajawal', sans-serif; font-size:.95rem; margin-bottom:14px; background:var(--cream);
+    color:var(--charcoal);
+  }
+  .modal-box textarea{ resize:vertical; min-height:80px; }
+  .modal-close{
+    position:absolute; top:12px; left:12px; background:none; border:none; font-size:1.3rem;
+    color:var(--green-soft); cursor:pointer; line-height:1;
+  }
+  .modal-box .btn{ margin-top:4px; }
+
+  /* ---------- Admin panel ---------- */
+  .admin-box{ max-width:520px; text-align:right; max-height:82vh; overflow-y:auto; }
+  .admin-box h3{ margin-bottom:10px; }
+  .admin-summary{ display:flex; gap:10px; margin-bottom:16px; }
+  .admin-summary .chip{ flex:1; background:var(--cream-deep); border:1px solid var(--gold-soft); border-radius:8px; padding:10px; text-align:center; }
+  .admin-summary .chip .n{ font-size:1.3rem; font-weight:900; color:var(--green); }
+  .admin-summary .chip .l{ font-size:.75rem; color:var(--gold); margin-top:2px; }
+  .admin-sec-title{ color:var(--green); font-weight:700; margin:14px 0 8px; border-bottom:1px solid var(--gold-soft); padding-bottom:6px; }
+  .admin-item{ background:var(--cream-deep); border:1px solid var(--gold-soft); border-radius:8px; padding:10px 12px; margin-bottom:8px; font-size:.9rem; }
+  .admin-item .a-name{ font-weight:700; color:var(--green); }
+  .admin-item .a-meta{ color:var(--gold); font-size:.78rem; margin-top:2px; }
+  .admin-empty{ text-align:center; color:var(--green-soft); opacity:.7; font-size:.9rem; padding:10px 0; }
+  .admin-refresh{ margin-top:10px; }
+</style>
+</head>
+<body>
+
+<!-- Splash -->
+<div id="splash" onclick="openInvitation()">
+  <div class="splash-content">
+    <div class="frame">
+      <svg viewBox="0 0 280 280">
+        <circle cx="140" cy="140" r="132" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-dasharray="2 6"/>
+        <circle cx="140" cy="140" r="118" fill="none" stroke="#C9A227" stroke-width="1"/>
+      </svg>
+      <div class="monogram"><span>M&T</span></div>
+    </div>
+    <h1 class="display">محمد &amp; تقى</h1>
+    <p class="tap">اضغط لفتح الدعوة</p>
+    <p class="sub">دعوة خاصة</p>
+  </div>
+</div>
+
+<!-- Main -->
+<div id="main">
+  <audio id="bgm" loop preload="auto">
+    <source src="wedding-song.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" onclick="toggleMusic()" id="musicBtn" title="تشغيل / إيقاف الموسيقى">
+    <svg id="musicIconOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg id="musicIconOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </button>
+
+  <div class="wrap">
+    <header class="names">
+      <p class="eyebrow">نحن بكل سعادة ندعوكم</p>
+      <h1 class="display">محمد</h1>
+      <p class="amp">&amp;</p>
+      <h1 class="display">تقى</h1>
+      <p class="tagline">تكتمل فرحتنا بوجودك</p>
+    </header>
+
+    <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+    <!-- Details -->
+    <div class="card">
+      <div class="card-head">تفاصيل الحفل</div>
+      <div class="card-body">
+        <div class="detail-row">
+          <div class="label">التاريخ</div>
+          <div class="value">30 أكتوبر 2026</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">الوقت</div>
+          <div class="value small">الساعة 7:00 مساءً</div>
+        </div>
+        <div class="detail-row">
+          <div class="label">المكان</div>
+          <div class="value small">قاعة لاروز - حديقة الحلمية للقوات المسلحة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="card">
+      <div class="card-head">الوقت المتبقي حتى الفرح</div>
+      <div class="card-body">
+        <div class="countdown">
+          <div class="box"><div class="num" id="cd-days">00</div><div class="lbl">يوم</div></div>
+          <div class="box"><div class="num" id="cd-hours">00</div><div class="lbl">ساعة</div></div>
+          <div class="box"><div class="num" id="cd-mins">00</div><div class="lbl">دقيقة</div></div>
+          <div class="box"><div class="num" id="cd-secs">00</div><div class="lbl">ثانية</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="card">
+      <div class="card-head">موقع الحفل</div>
+      <div class="card-body">
+        <a class="map-frame" href="https://www.google.com/maps/place/LAROSE+HALL/@30.1082787,31.3254281,17z/data=!3m1!4b1!4m6!3m5!1s0x14581500134afa7b:0x2f42771814e0ce4!8m2!3d30.1082787!4d31.3254281!16s%2Fg%2F11npt6mw_b" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
+          <iframe
+            id="mapFrame"
+            data-src="https://www.google.com/maps?q=30.1082787,31.3254281&z=17&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            title="خريطة قاعة لاروز - حديقة الحلمية للقوات المسلحة"
+            style="pointer-events:none;">
+          </iframe>
+        </a>
+        <p class="map-note">اضغط على الخريطة للحصول على الاتجاهات</p>
+      </div>
+    </div>
+
+    <!-- Congratulations Wall -->
+    <div class="card">
+      <div class="card-head">رسائل التهنئة</div>
+      <div class="card-body">
+        <div id="congratsWall" class="congrats-wall">
+          <p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn primary" onclick="addToCalendar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        أضف للتقويم
+      </button>
+      <button class="btn gold" onclick="openModal('rsvpModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        أكد حضورك
+      </button>
+      <button class="btn soft" onclick="openModal('congratsModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"></path><path d="M22 6l-10 7L2 6"></path><path d="M2 6h20v12H2z"></path></svg>
+        اكتب رسالة تهنئة
+      </button>
+    </div>
+
+    <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+    <footer>
+      <p class="display">نتطلع لرؤيتك</p>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- RSVP Modal -->
+<div class="modal-overlay" id="rsvpModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('rsvpModal')">✕</button>
+    <h3>تأكيد الحضور</h3>
+    <label>الاسم</label>
+    <input type="text" id="rsvpName" placeholder="اكتب اسمك">
+    <label>عدد الحضور</label>
+    <input type="number" id="rsvpCount" min="1" value="1">
+    <label>هل ستحضر؟</label>
+    <select id="rsvpAttending">
+      <option value="true">أكيد هحضر</option>
+      <option value="false">معتذر</option>
+    </select>
+    <button class="btn gold" id="rsvpSubmitBtn" onclick="submitRSVP()">إرسال التأكيد</button>
+  </div>
+</div>
+
+<!-- Congrats Modal -->
+<div class="modal-overlay" id="congratsModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('congratsModal')">✕</button>
+    <h3>رسالة تهنئة</h3>
+    <label>الاسم</label>
+    <input type="text" id="congratsName" placeholder="اكتب اسمك">
+    <label>الرسالة</label>
+    <textarea id="congratsMessage" placeholder="اكتب رسالتك..."></textarea>
+    <button class="btn soft" id="congratsSubmitBtn" onclick="submitCongrats()">إرسال التهنئة</button>
+  </div>
+</div>
+
+<!-- Admin: password gate -->
+<div class="modal-overlay" id="adminAuthModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('adminAuthModal')">✕</button>
+    <h3>دخول لوحة التحكم</h3>
+    <label>كلمة السر</label>
+    <input type="password" id="adminPassInput" placeholder="********">
+    <button class="btn primary" onclick="loadAdminPanel()">دخول</button>
+  </div>
+</div>
+
+<!-- Admin: data panel -->
+<div class="modal-overlay" id="adminPanelModal">
+  <div class="modal-box admin-box">
+    <button class="modal-close" onclick="closeModal('adminPanelModal')">✕</button>
+    <h3>لوحة التحكم (خاص بيك بس)</h3>
+    <div class="admin-summary">
+      <div class="chip"><div class="n" id="adminRsvpYes">0</div><div class="l">هيحضروا</div></div>
+      <div class="chip"><div class="n" id="adminRsvpNo">0</div><div class="l">معتذرين</div></div>
+      <div class="chip"><div class="n" id="adminRsvpTotal">0</div><div class="l">إجمالي الأفراد</div></div>
+    </div>
+    <div class="admin-sec-title">تأكيدات الحضور</div>
+    <div id="adminRsvpList"></div>
+    <div class="admin-sec-title">رسائل التهنئة</div>
+    <div id="adminCongratsList"></div>
+    <button class="btn outline admin-refresh" onclick="loadAdminPanel()">تحديث البيانات</button>
+  </div>
+</div>
+
+<script>
+  // ========= إعدادات خاصة =========
+  // حط هنا بيانات مشروع Supabase بتاعك (Project Settings > API)
+  const SUPABASE_URL = 'https://vvqmodnoyqncrgeebktr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_p5pTvEXNfuGSau1cE4YXQg_ehm2KY_2';
+  // ================================
+
+  function openModal(id){ document.getElementById(id).classList.add('show'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+  // حمّل الخريطة بعد ما الصفحة تخلص تحميل، عشان لو جوجل ماب اتأخرت ما توقفش تحميل الصفحة
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      const mapFrame = document.getElementById('mapFrame');
+      if(mapFrame && !mapFrame.src) mapFrame.src = mapFrame.dataset.src;
+    }, 300);
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=> t.classList.remove('show'), 2500);
+  }
+
+  function openInvitation(){
+    document.getElementById('splash').style.display = 'none';
+    const main = document.getElementById('main');
+    main.classList.add('show');
+    const audio = document.getElementById('bgm');
+    audio.play().then(()=>{
+      document.getElementById('musicIconOn').style.display = 'block';
+      document.getElementById('musicIconOff').style.display = 'none';
+    }).catch(()=>{
+      // لو المتصفح منع التشغيل التلقائي، جرب تاني مع أول لمسة/ضغطة من الزائر
+      const retryPlay = () => {
+        audio.play().then(()=>{
+          document.getElementById('musicIconOn').style.display = 'block';
+          document.getElementById('musicIconOff').style.display = 'none';
+        }).catch(()=>{});
+        document.removeEventListener('click', retryPlay);
+        document.removeEventListener('touchstart', retryPlay);
+      };
+      document.addEventListener('click', retryPlay, { once:true });
+      document.addEventListener('touchstart', retryPlay, { once:true });
+    });
+  }
+
+  function toggleMusic(){
+    const audio = document.getElementById('bgm');
+    const on = document.getElementById('musicIconOn');
+    const off = document.getElementById('musicIconOff');
+    if(audio.paused){
+      audio.play();
+      on.style.display='block'; off.style.display='none';
+    } else {
+      audio.pause();
+      on.style.display='none'; off.style.display='block';
+    }
+  }
+
+  // Countdown
+  function updateCountdown(){
+    const weddingDate = new Date('2026-10-30T19:00:00').getTime();
+    const now = new Date().getTime();
+    const diff = weddingDate - now;
+    if(diff > 0){
+      const d = Math.floor(diff / (1000*60*60*24));
+      const h = Math.floor((diff / (1000*60*60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+      document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+      document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+    }
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  function addToCalendar(){
+    const title = 'حفل زفاف محمد وتقى';
+    const details = 'قاعة لاروز - حديقة الحلمية للقوات المسلحة';
+    const location = 'قاعة لاروز - حديقة الحلمية للقوات المسلحة';
+    const dates = '20261030T170000Z/20261030T220000Z'; // 7:00م - 10:00م بتوقيت مصر (UTC+2)
+    const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + encodeURIComponent(title)
+      + '&dates=' + dates
+      + '&details=' + encodeURIComponent(details)
+      + '&location=' + encodeURIComponent(location);
+    window.open(url, '_blank');
+  }
+
+  // ========= إرسال البيانات (Supabase) =========
+  function supabaseReady(){
+    return !SUPABASE_URL.includes('PASTE_YOUR') && !SUPABASE_ANON_KEY.includes('PASTE_YOUR');
+  }
+
+  async function submitRSVP(){
+    if(!supabaseReady()){ showToast('لازم تضيف بيانات Supabase الأول'); return; }
+    const name = document.getElementById('rsvpName').value.trim();
+    const guest_count = Number(document.getElementById('rsvpCount').value) || 1;
+    const attending = document.getElementById('rsvpAttending').value === 'true';
+    if(!name){ showToast('من فضلك اكتب اسمك'); return; }
+
+    const btn = document.getElementById('rsvpSubmitBtn');
+    btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+    let ok = false;
+    try{
+      const res = await fetch(SUPABASE_URL + '/rest/v1/rsvp', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ name, guest_count, attending })
+      });
+      ok = res.ok;
+    }catch(err){ ok = false; }
+    btn.disabled = false; btn.textContent = 'إرسال التأكيد';
+
+    if(ok){
+      closeModal('rsvpModal');
+      document.getElementById('rsvpName').value = '';
+      document.getElementById('rsvpCount').value = 1;
+      showToast('تم تأكيد حضورك، شكرًا ليك 💚');
+    } else {
+      showToast('حصل خطأ في الإرسال، حاول تاني');
+    }
+  }
+
+  let congratsSeen = new Set();
+
+  async function submitCongrats(){
+    if(!supabaseReady()){ showToast('لازم تضيف بيانات Supabase الأول'); return; }
+    const name = document.getElementById('congratsName').value.trim();
+    const message = document.getElementById('congratsMessage').value.trim();
+    if(!name || !message){ showToast('اكتب اسمك ورسالتك الأول'); return; }
+
+    const btn = document.getElementById('congratsSubmitBtn');
+    btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+    let ok = false;
+    try{
+      const res = await fetch(SUPABASE_URL + '/rest/v1/congrats', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({ name, message })
+      });
+      ok = res.ok;
+      if(ok){
+        const inserted = await res.json();
+        const row = Array.isArray(inserted) ? inserted[0] : inserted;
+        if(row && row.created_at) congratsSeen.add(row.created_at);
+      }
+    }catch(err){ ok = false; }
+    btn.disabled = false; btn.textContent = 'إرسال التهنئة';
+
+    if(ok){
+      closeModal('congratsModal');
+      addCongratsToWall({ name, message });
+      document.getElementById('congratsName').value = '';
+      document.getElementById('congratsMessage').value = '';
+      showToast('وصلت رسالتك، شكرًا ليك 💌');
+    } else {
+      showToast('حصل خطأ في الإرسال، حاول تاني');
+    }
+  }
+
+  // ========= حائط التهنئة العام (يبان لأي حد يفتح الدعوة) =========
+  function addCongratsToWall(item){
+    const wall = document.getElementById('congratsWall');
+    const empty = document.getElementById('congratsEmpty');
+    if(empty) empty.remove();
+    const div = document.createElement('div');
+    div.className = 'congrats-item';
+    div.innerHTML = `<div class="cg-name">${escapeHtml(item.name)}</div><div class="cg-msg">${escapeHtml(item.message)}</div>`;
+    wall.prepend(div);
+  }
+
+  async function loadCongratsWall(){
+    if(!supabaseReady()) return;
+    try{
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/congrats?select=name,message,created_at&order=created_at.desc&_=' + Date.now(),
+        {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY
+          },
+          cache: 'no-store'
+        }
+      );
+      if(!res.ok) return;
+      const list = await res.json();
+      if(!Array.isArray(list)) return;
+
+      const wall = document.getElementById('congratsWall');
+      if(!list.length){
+        if(!congratsSeen.size){
+          wall.innerHTML = '<p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>';
+        }
+        return;
+      }
+      const empty = document.getElementById('congratsEmpty');
+      if(empty) empty.remove();
+
+      const newItems = list.filter(c => !congratsSeen.has(c.created_at));
+      if(!newItems.length) return;
+      newItems.slice().reverse().forEach(c => {
+        congratsSeen.add(c.created_at);
+        addCongratsToWall({ name: c.name, message: c.message });
+      });
+    }catch(err){
+      // مفيش نت أو الإعدادات لسه متظبطش - سيب الحائط زي ما هو
+    }
+  }
+  window.addEventListener('DOMContentLoaded', loadCongratsWall);
+  // تحديث تلقائي لحائط التهاني كل 10 ثواني عشان أي حد فاتح الصفحة يشوف الرسايل الجديدة من غير ما يعمل ريفريش يدوي
+  setInterval(loadCongratsWall, 10000);
+
+  // ========= لوحة التحكم الخاصة =========
+  // افتح الدعوة بالرابط ده عشان تشوف تأكيدات الحضور والتهاني: yourpage.html?admin=1
+  if(new URLSearchParams(window.location.search).get('admin') === '1'){
+    window.addEventListener('load', () => openModal('adminAuthModal'));
+  }
+
+  async function loadAdminPanel(){
+    const pass = document.getElementById('adminPassInput')
+      ? document.getElementById('adminPassInput').value
+      : window.__adminPass;
+    window.__adminPass = pass;
+
+    if(!supabaseReady()){
+      showToast('لازم تضيف بيانات Supabase الأول');
+      return;
+    }
+
+    try{
+      const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_admin_data', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ p_password: pass })
+      });
+      if(!res.ok){
+        showToast('كلمة السر غلط');
+        return;
+      }
+      const data = await res.json();
+      closeModal('adminAuthModal');
+      renderAdminPanel(data);
+      openModal('adminPanelModal');
+    }catch(err){
+      showToast('مافيش اتصال بالسيرفر دلوقتي');
+    }
+  }
+
+  function renderAdminPanel(data){
+    const rsvpList = data.rsvp || [];
+    const congratsList = data.congrats || [];
+
+    let yes = 0, no = 0, totalPeople = 0;
+    rsvpList.forEach(r => {
+      if(r.attending){ yes++; totalPeople += Number(r.guest_count) || 1; } else { no++; }
+    });
+    document.getElementById('adminRsvpYes').textContent = yes;
+    document.getElementById('adminRsvpNo').textContent = no;
+    document.getElementById('adminRsvpTotal').textContent = totalPeople;
+
+    const rsvpEl = document.getElementById('adminRsvpList');
+    rsvpEl.innerHTML = rsvpList.length ? '' : '<p class="admin-empty">لسه مفيش تأكيدات</p>';
+    rsvpList.forEach(r => {
+      const status = r.attending ? 'هيحضر' : 'معتذر';
+      rsvpEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(r.name)} — ${status}</div><div class="a-meta">عدد الحضور: ${r.guest_count} · ${new Date(r.created_at).toLocaleString('ar-EG')}</div></div>`;
+    });
+
+    const cgEl = document.getElementById('adminCongratsList');
+    cgEl.innerHTML = congratsList.length ? '' : '<p class="admin-empty">لسه مفيش رسائل</p>';
+    congratsList.forEach(c => {
+      cgEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(c.name)}</div><div>${escapeHtml(c.message)}</div><div class="a-meta">${new Date(c.created_at).toLocaleString('ar-EG')}</div></div>`;
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = String(str ?? '');
+    return d.innerHTML;
+  }
+</script>
+</body>
+</html>
