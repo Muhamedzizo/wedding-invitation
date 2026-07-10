@@ -566,6 +566,7 @@
   }
 
   let congratsSeen = new Set();
+  let initialLoadDone = false;
 
   async function submitCongrats(){
     if(!supabaseReady()){ showToast('لازم تضيف بيانات Supabase الأول'); return; }
@@ -635,11 +636,22 @@
 
       const wall = document.getElementById('congratsWall');
       if(!list.length){
-        if(!congratsSeen.size){
-          wall.innerHTML = '<p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>';
-        }
+        wall.innerHTML = '<p class="congrats-empty" id="congratsEmpty">كن أول من يكتب رسالة تهنئة 💌</p>';
         return;
       }
+
+      // إذا كان هذا التحميل الأول، عرّض جميع التهنئات
+      if(!initialLoadDone){
+        wall.innerHTML = '';
+        list.forEach(c => {
+          congratsSeen.add(c.created_at);
+          addCongratsToWall({ name: c.name, message: c.message });
+        });
+        initialLoadDone = true;
+        return;
+      }
+
+      // بعد التحميل الأول، عرّض فقط التهنئات الجديدة
       const empty = document.getElementById('congratsEmpty');
       if(empty) empty.remove();
 
