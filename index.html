@@ -135,7 +135,7 @@
   .wrap{ max-width:640px; margin:0 auto; padding:56px 20px 32px; }
 
   .hero-video-block{
-    position:relative; width:calc(100% + 40px); aspect-ratio:4/5; max-height:78vh;
+    position:relative; width:calc(100% + 40px); aspect-ratio:16/9; max-height:78vh;
     overflow:hidden; margin:-56px -20px 22px;
     box-shadow:0 10px 40px rgba(30,58,43,0.15);
   }
@@ -313,7 +313,7 @@
 
   <div class="wrap">
     <div class="hero-video-block">
-      <video id="heroVideo" autoplay muted loop playsinline>
+      <video id="heroVideo" autoplay loop playsinline>
         <source src="hero-video.mp4" type="video/mp4">
       </video>
       <div class="hero-fade"></div>
@@ -529,18 +529,16 @@
     unmuteHeroVideo();
   }
 
-  // صوت الفيديو نفسه بيتشغل (بيتفك الكتم) بمجرد ما الزائر يدوس على الشعار ويفتح الدعوة
+  // صوت الفيديو نفسه بيتشغل بمجرد ما الزائر يدوس على الشعار ويفتح الدعوة
   function unmuteHeroVideo(){
     const video = document.getElementById('heroVideo');
     if(!video) return;
-    video.muted = false;
     video.play().then(()=>{
       document.getElementById('musicIconOn').style.display = 'block';
       document.getElementById('musicIconOff').style.display = 'none';
     }).catch(()=>{
-      // لو المتصفح لسه رافض التشغيل غير المكتوم، جرب تاني مع أول لمسة داخل الصفحة نفسها
+      // لو المتصفح لسه رافض التشغيل، جرب تاني مع أول لمسة داخل الصفحة نفسها
       const retry = () => {
-        video.muted = false;
         video.play().then(()=>{
           document.getElementById('musicIconOn').style.display = 'block';
           document.getElementById('musicIconOff').style.display = 'none';
@@ -556,12 +554,11 @@
     const on = document.getElementById('musicIconOn');
     const off = document.getElementById('musicIconOff');
     if(!video) return;
-    if(video.muted){
-      video.muted = false;
+    if(video.paused){
       video.play();
       on.style.display='block'; off.style.display='none';
     } else {
-      video.muted = true;
+      video.pause();
       on.style.display='none'; off.style.display='block';
     }
   }
