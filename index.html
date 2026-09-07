@@ -339,7 +339,6 @@
     <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
 
     <!-- Details: the displayed event(s) are selected by the URL query parameter. -->
-    <p class="invite-note" id="inviteNote"></p>
     <div id="ketabEvent" class="card event-card">
       <div class="card-head">تفاصيل كتب الكتاب</div>
       <div class="card-body">
@@ -615,7 +614,6 @@
   function configureInvitation(){
     const both = eventMode === 'both';
     document.getElementById('ketabEvent').style.display = both ? '' : 'none';
-    document.getElementById('inviteNote').textContent = both ? 'هذه الدعوة تشمل كتب الكتاب والفرح' : 'هذه الدعوة خاصة بالفرح فقط';
     document.getElementById('countdownTitle').textContent = both ? 'الوقت المتبقي حتى كتب الكتاب' : 'الوقت المتبقي حتى الفرح';
     document.getElementById('ketabMapEvent').style.display = both ? '' : 'none';
     document.getElementById('mapsCard').querySelector('.card-head').textContent = both ? 'خرائط أماكن الاحتفال' : 'خريطة موقع الفرح';
