@@ -202,6 +202,10 @@
   .map-frame{ width:100%; height:340px; border:1px solid var(--gold-soft); border-radius:6px; overflow:hidden; }
   .map-frame iframe{ width:100%; height:100%; border:0; display:block; }
   .map-note{ text-align:center; color:var(--green-soft); font-size:.85rem; margin-top:10px; }
+  .map-event{ margin-bottom:30px; }
+  .map-event:last-child{ margin-bottom:0; }
+  .map-event-title{ color:var(--green); font-family:'Aref Ruqaa', serif; font-size:1.25rem; text-align:center; margin-bottom:12px; }
+
 
   .actions{ display:flex; flex-direction:column; gap:12px; margin-bottom:36px; }
   .btn{
@@ -349,7 +353,7 @@
         </div>
         <div class="detail-row">
           <div class="label">المكان</div>
-          <div class="value small">قاعة ريحانة</div>
+          <div class="value small">قاعة ريحانة - شبين القناطر - القليوبية</div>
         </div>
         <div class="detail-row">
           <a id="ketabMapLink" class="btn outline" href="https://maps.app.goo.gl/86qZrAUi8jEhQzuR8?g_st=aw" target="_blank" rel="noopener">افتح موقع قاعة ريحانة على الخريطة</a>
@@ -390,17 +394,26 @@
       </div>
     </div>
 
-    <!-- Map -->
-    <div class="card">
-      <div class="card-head" id="mapTitle">موقع الحفل</div>
-      <div class="card-body">
-        <a id="mapLink" class="map-frame" href="https://www.google.com/maps/place/LAROSE+HALL/@30.1082787,31.3254281,17z/data=!3m1!4b1!4m6!3m5!1s0x14581500134afa7b:0x2f42771814e0ce4!8m2!3d30.1082787!4d31.3254281!16s%2Fg%2F11npt6mw_b" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
-          <iframe id="mapFrame" data-src="https://www.google.com/maps?q=30.1082787,31.3254281&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="خريطة موقع الحفل" style="pointer-events:none;"></iframe>
-        </a>
-        <p class="map-note">اضغط على الخريطة للحصول على الاتجاهات</p>
+    <!-- Maps -->
+    <div class="card" id="mapsCard">
+      <div class="card-head">خرائط أماكن الاحتفال</div>
+      <div class="card-body" id="mapsBody">
+        <div class="map-event" id="ketabMapEvent">
+          <div class="map-event-title">خريطة كتب الكتاب — قاعة ريحانة</div>
+          <a class="map-frame" href="https://maps.app.goo.gl/86qZrAUi8jEhQzuR8?g_st=aw" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
+            <iframe src="https://www.google.com/maps?q=%D9%82%D8%A7%D8%B9%D8%A9+%D8%B1%D9%8A%D8%AD%D8%A7%D9%86%D8%A9+%D8%B4%D8%A8%D9%8A%D9%86+%D8%A7%D9%84%D9%82%D9%86%D8%A7%D8%B7%D8%B1+%D8%A7%D9%84%D9%82%D9%84%D9%8A%D9%88%D8%A8%D9%8A%D8%A9&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="خريطة قاعة ريحانة - شبين القناطر - القليوبية" style="pointer-events:none;"></iframe>
+          </a>
+          <p class="map-note">قاعة ريحانة - شبين القناطر - القليوبية<br>اضغط على الخريطة للحصول على الاتجاهات</p>
+        </div>
+        <div class="map-event" id="weddingMapEvent">
+          <div class="map-event-title">خريطة الفرح — قاعة لاروز</div>
+          <a class="map-frame" href="https://www.google.com/maps/place/LAROSE+HALL/@30.1082787,31.3254281,17z/data=!3m1!4b1!4m6!3m5!1s0x14581500134afa7b:0x2f42771814e0ce4!8m2!3d30.1082787!4d31.3254281!16s%2Fg%2F11npt6mw_b" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
+            <iframe src="https://www.google.com/maps?q=30.1082787,31.3254281&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="خريطة قاعة لاروز - حديقة الحلمية للقوات المسلحة" style="pointer-events:none;"></iframe>
+          </a>
+          <p class="map-note">قاعة لاروز - حديقة الحلمية للقوات المسلحة<br>اضغط على الخريطة للحصول على الاتجاهات</p>
+        </div>
       </div>
     </div>
-
     <!-- Congratulations Wall -->
     <div class="card">
       <div class="card-head">رسائل التهنئة</div>
@@ -595,8 +608,8 @@
   } : {
     countdown: '2026-10-23T20:00:00',
     title: 'كتب كتاب محمد وتقى',
-    details: 'قاعة ريحانة - 23 أكتوبر 2026، الساعة 8:00 مساءً',
-    location: 'قاعة ريحانة',
+    details: 'قاعة ريحانة - شبين القناطر - القليوبية - 23 أكتوبر 2026، الساعة 8:00 مساءً',
+    location: 'قاعة ريحانة - شبين القناطر - القليوبية',
     dates: '20261023T170000Z/20261023T190000Z'
   };
   function configureInvitation(){
@@ -604,18 +617,8 @@
     document.getElementById('ketabEvent').style.display = both ? '' : 'none';
     document.getElementById('inviteNote').textContent = both ? 'هذه الدعوة تشمل كتب الكتاب والفرح' : 'هذه الدعوة خاصة بالفرح فقط';
     document.getElementById('countdownTitle').textContent = both ? 'الوقت المتبقي حتى كتب الكتاب' : 'الوقت المتبقي حتى الفرح';
-    const mapLink = document.getElementById('mapLink');
-    const mapFrame = document.getElementById('mapFrame');
-    if(both){
-      mapLink.href = document.getElementById('ketabMapLink').href;
-      mapFrame.dataset.src = 'https://www.google.com/maps?q=%D9%82%D8%A7%D8%B9%D8%A9+%D8%B1%D9%8A%D8%AD%D8%A7%D9%86%D8%A9+%D9%85%D8%AF%D9%8A%D9%86%D8%A9+%D8%B4%D8%A8%D9%8A%D9%86+%D8%A7%D9%84%D9%82%D9%86%D8%A7%D8%B7%D8%B1&output=embed';
-      mapFrame.title = 'خريطة قاعة ريحانة';
-      document.getElementById('mapTitle').textContent = 'موقع كتب الكتاب';
-    } else {
-      mapFrame.dataset.src = 'https://www.google.com/maps?q=30.1082787,31.3254281&z=17&output=embed';
-      mapFrame.title = 'خريطة قاعة لاروز - حديقة الحلمية للقوات المسلحة';
-      document.getElementById('mapTitle').textContent = 'موقع الفرح';
-    }
+    document.getElementById('ketabMapEvent').style.display = both ? '' : 'none';
+    document.getElementById('mapsCard').querySelector('.card-head').textContent = both ? 'خرائط أماكن الاحتفال' : 'خريطة موقع الفرح';
   }
   configureInvitation();
   // Countdown
