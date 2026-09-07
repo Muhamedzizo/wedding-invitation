@@ -380,15 +380,26 @@
       </div>
     </div>
 
-    <!-- Countdown -->
-    <div class="card">
-      <div class="card-head" id="countdownTitle">الوقت المتبقي حتى الفرح</div>
+    <!-- Separate countdowns for each event -->
+    <div class="card countdown-card" id="ketabCountdown">
+      <div class="card-head">الوقت المتبقي حتى كتب الكتاب</div>
       <div class="card-body">
         <div class="countdown">
-          <div class="box"><div class="num" id="cd-days">00</div><div class="lbl">يوم</div></div>
-          <div class="box"><div class="num" id="cd-hours">00</div><div class="lbl">ساعة</div></div>
-          <div class="box"><div class="num" id="cd-mins">00</div><div class="lbl">دقيقة</div></div>
-          <div class="box"><div class="num" id="cd-secs">00</div><div class="lbl">ثانية</div></div>
+          <div class="box"><div class="num" id="ketab-cd-days">00</div><div class="lbl">يوم</div></div>
+          <div class="box"><div class="num" id="ketab-cd-hours">00</div><div class="lbl">ساعة</div></div>
+          <div class="box"><div class="num" id="ketab-cd-mins">00</div><div class="lbl">دقيقة</div></div>
+          <div class="box"><div class="num" id="ketab-cd-secs">00</div><div class="lbl">ثانية</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card countdown-card" id="weddingCountdown">
+      <div class="card-head">الوقت المتبقي حتى الفرح</div>
+      <div class="card-body">
+        <div class="countdown">
+          <div class="box"><div class="num" id="wedding-cd-days">00</div><div class="lbl">يوم</div></div>
+          <div class="box"><div class="num" id="wedding-cd-hours">00</div><div class="lbl">ساعة</div></div>
+          <div class="box"><div class="num" id="wedding-cd-mins">00</div><div class="lbl">دقيقة</div></div>
+          <div class="box"><div class="num" id="wedding-cd-secs">00</div><div class="lbl">ثانية</div></div>
         </div>
       </div>
     </div>
@@ -619,22 +630,27 @@
     document.getElementById('mapsCard').querySelector('.card-head').textContent = both ? 'خرائط أماكن الاحتفال' : 'خريطة موقع الفرح';
   }
   configureInvitation();
-  // Countdown
-  function updateCountdown(){
-    const targetDate = new Date(eventConfig.countdown).getTime();
-    const now = new Date().getTime();
-    const diff = targetDate - now;
-    if(diff > 0){
-      const d = Math.floor(diff / (1000*60*60*24));
-      const h = Math.floor((diff / (1000*60*60)) % 24);
-      const m = Math.floor((diff / 1000 / 60) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-      document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-      document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-      document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-      document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-    }
+  // عداد مستقل لكل مناسبة.
+  function updateCountdownFor(prefix, target){
+    const diff = new Date(target).getTime() - new Date().getTime();
+    const values = diff > 0 ? [
+      Math.floor(diff / (1000*60*60*24)),
+      Math.floor((diff / (1000*60*60)) % 24),
+      Math.floor((diff / 1000 / 60) % 60),
+      Math.floor((diff / 1000) % 60)
+    ] : [0, 0, 0, 0];
+    ['days', 'hours', 'mins', 'secs'].forEach((part, index) => {
+      document.getElementById(prefix + '-cd-' + part).textContent = String(values[index]).padStart(2, '0');
+    });
   }
+  function updateCountdown(){
+    updateCountdownFor('ketab', '2026-10-23T20:00:00');
+    updateCountdownFor('wedding', '2026-10-30T19:00:00');
+  }
+  function configureCountdowns(){
+    document.getElementById('ketabCountdown').style.display = eventMode === 'both' ? '' : 'none';
+  }
+  configureCountdowns();
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
