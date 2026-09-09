@@ -244,8 +244,15 @@
   .congrats-empty{ text-align:center; color:var(--green-soft); opacity:.7; font-size:.95rem; padding:12px 0; }
   .congrats-item{
     background:var(--cream-deep); border:1px solid var(--gold-soft); border-radius:8px;
-    padding:14px 16px;
+    padding:14px 16px; animation: congratsReveal .45s ease both;
   }
+  @keyframes congratsReveal{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+  .congrats-item .cg-time{ color:var(--gold); font-size:.75rem; margin-top:7px; }
+  .admin-filter{ width:100%; padding:10px; border:1px solid var(--gold-soft); border-radius:6px; background:var(--cream); color:var(--charcoal); font-family:'Tajawal',sans-serif; margin-bottom:10px; }
+  .admin-actions{ display:flex; gap:8px; margin-top:8px; }
+  .admin-actions button{ flex:1; padding:7px; border:1px solid var(--gold-soft); border-radius:6px; background:#fff; color:var(--green); cursor:pointer; font-family:'Tajawal',sans-serif; font-size:.8rem; }
+  .admin-actions button.danger{ color:#9b3d35; }
+  .admin-hidden{ opacity:.62; }
   .congrats-item .cg-name{ color:var(--green); font-weight:700; font-size:.95rem; margin-bottom:4px; }
   .congrats-item .cg-msg{ color:var(--charcoal); font-size:.9rem; line-height:1.6; }
 
@@ -518,6 +525,11 @@
       <div class="chip"><div class="n" id="adminRsvpTotal">0</div><div class="l">إجمالي الأفراد</div></div>
     </div>
     <div class="admin-sec-title">تأكيدات الحضور</div>
+    <select id="adminRsvpFilter" class="admin-filter" onchange="renderAdminRsvp()">
+      <option value="all">كل الدعوات</option>
+      <option value="both">كتب الكتاب والفرح</option>
+      <option value="wedding">الفرح فقط</option>
+    </select>
     <div id="adminRsvpList"></div>
     <div class="admin-sec-title">رسائل التهنئة</div>
     <div id="adminCongratsList"></div>
@@ -744,7 +756,7 @@
 
     if(ok){
       closeModal('congratsModal');
-      addCongratsToWall({ name, message });
+      addCongratsToWall({ name, message, created_at: new Date().toISOString() });
       document.getElementById('congratsName').value = '';
       document.getElementById('congratsMessage').value = '';
       showToast('وصلت رسالتك، شكرًا ليك 💌');
@@ -760,7 +772,7 @@
     if(empty) empty.remove();
     const div = document.createElement('div');
     div.className = 'congrats-item';
-    div.innerHTML = `<div class="cg-name">${escapeHtml(item.name)}</div><div class="cg-msg">${escapeHtml(item.message)}</div>`;
+    div.innerHTML = `<div class="cg-name">${escapeHtml(item.name)}</div><div class="cg-msg">${escapeHtml(item.message)}</div><div class="cg-time">${formatDate(item.created_at || new Date().toISOString())}</div>`;
     wall.prepend(div);
   }
 
@@ -768,7 +780,7 @@
     if(!supabaseReady()) return;
     try{
       const res = await fetch(
-        SUPABASE_URL + '/rest/v1/congrats?select=name,message,created_at&order=created_at.desc&_=' + Date.now(),
+        SUPABASE_URL + '/rest/v1/congrats?select=name,message,created_at&is_hidden=eq.false&order=created_at.desc&_=' + Date.now(),
         {
           headers: {
             'apikey': SUPABASE_ANON_KEY
@@ -843,30 +855,51 @@
     }
   }
 
+  let adminData = { rsvp: [], congrats: [] };
+  let adminFilter = 'all';
+  function formatDate(value){
+    return new Date(value).toLocaleString('ar-EG', { dateStyle:'medium', timeStyle:'short' });
+  }
   function renderAdminPanel(data){
-    const rsvpList = data.rsvp || [];
-    const congratsList = data.congrats || [];
-
-    let yes = 0, no = 0, totalPeople = 0;
-    rsvpList.forEach(r => {
-      if(r.attending){ yes++; totalPeople += Number(r.guest_count) || 1; } else { no++; }
-    });
-    document.getElementById('adminRsvpYes').textContent = yes;
-    document.getElementById('adminRsvpNo').textContent = no;
-    document.getElementById('adminRsvpTotal').textContent = totalPeople;
-
-    const rsvpEl = document.getElementById('adminRsvpList');
-    rsvpEl.innerHTML = rsvpList.length ? '' : '<p class="admin-empty">لسه مفيش تأكيدات</p>';
-    rsvpList.forEach(r => {
-      const status = r.attending ? 'هيحضر' : 'معتذر';
-      rsvpEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(r.name)} — ${status}</div><div class="a-meta">عدد الحضور: ${r.guest_count} · ${new Date(r.created_at).toLocaleString('ar-EG')}</div></div>`;
-    });
-
+    adminData = data || { rsvp: [], congrats: [] };
+    renderAdminRsvp();
+    const congratsList = adminData.congrats || [];
     const cgEl = document.getElementById('adminCongratsList');
     cgEl.innerHTML = congratsList.length ? '' : '<p class="admin-empty">لسه مفيش رسائل</p>';
     congratsList.forEach(c => {
-      cgEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(c.name)}</div><div>${escapeHtml(c.message)}</div><div class="a-meta">${new Date(c.created_at).toLocaleString('ar-EG')}</div></div>`;
+      const hidden = Boolean(c.is_hidden);
+      cgEl.innerHTML += `<div class="admin-item ${hidden ? 'admin-hidden' : ''}" id="admin-congrats-${c.id}"><div class="a-name">${escapeHtml(c.name)}${hidden ? ' — مخفية' : ''}</div><div>${escapeHtml(c.message)}</div><div class="a-meta">${formatDate(c.created_at)}</div><div class="admin-actions"><button onclick="toggleCongratsVisibility(${c.id}, ${hidden ? 'false' : 'true'})">${hidden ? 'إظهار' : 'إخفاء'}</button><button class="danger" onclick="deleteCongrats(${c.id})">حذف</button></div></div>`;
     });
+  }
+  function renderAdminRsvp(){
+    adminFilter = document.getElementById('adminRsvpFilter')?.value || adminFilter || 'all';
+    const all = adminData.rsvp || [];
+    const rsvpList = adminFilter === 'all' ? all : all.filter(r => (r.event_type || 'wedding') === adminFilter);
+    let yes=0, no=0, totalPeople=0;
+    rsvpList.forEach(r => { if(r.attending){ yes++; totalPeople += Number(r.guest_count)||1; } else no++; });
+    document.getElementById('adminRsvpYes').textContent=yes;
+    document.getElementById('adminRsvpNo').textContent=no;
+    document.getElementById('adminRsvpTotal').textContent=totalPeople;
+    const rsvpEl=document.getElementById('adminRsvpList');
+    rsvpEl.innerHTML=rsvpList.length ? '' : '<p class="admin-empty">لسه مفيش تأكيدات</p>';
+    rsvpList.forEach(r => {
+      const status=r.attending?'هيحضر':'معتذر';
+      const eventLabel=(r.event_type||'wedding')==='both'?'كتب الكتاب والفرح':'الفرح فقط';
+      rsvpEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(r.name)} — ${status}</div><div class="a-meta">${eventLabel} · عدد الحضور: ${r.guest_count} · ${formatDate(r.created_at)}</div></div>`;
+    });
+  }
+  async function adminRpc(path, body){
+    const res=await fetch(SUPABASE_URL+'/rest/v1/rpc/'+path,{method:'POST',headers:{'apikey':SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify({...body,p_password:window.__adminPass})});
+    return res.ok;
+  }
+  async function toggleCongratsVisibility(id, hidden){
+    if(!await adminRpc('admin_set_congrats_hidden',{p_id:id,p_hidden:hidden})){ showToast('تعذر تحديث الرسالة'); return; }
+    showToast(hidden?'تم إخفاء الرسالة':'تم إظهار الرسالة'); loadAdminPanel(); loadCongratsWall();
+  }
+  async function deleteCongrats(id){
+    if(!confirm('هل تريد حذف رسالة التهنئة نهائيًا؟')) return;
+    if(!await adminRpc('admin_delete_congrats',{p_id:id})){ showToast('تعذر حذف الرسالة'); return; }
+    showToast('تم حذف الرسالة'); loadAdminPanel(); loadCongratsWall();
   }
 
   function escapeHtml(str){
