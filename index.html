@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>دعوة زفاف محمد وتقى</title>
-<meta name="description" content="دعوة زفاف محمد وتقى — تفاصيل كتب الكتاب والحنة والحنة والفرح، المواعيد، الخرائط ورسائل التهنئة.">
+<meta name="description" content="دعوة زفاف محمد وتقى — تفاصيل كتب الكتاب والحنة والفرح، المواعيد، الخرائط ورسائل التهنئة.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="دعوة زفاف محمد وتقى">
 <meta property="og:description" content="يشرفنا حضوركم ومشاركتنا فرحتنا — محمد وتقى">
@@ -494,7 +494,7 @@
     <input type="number" id="rsvpCount" min="1" max="10" value="1">
     <div id="attendanceTypeField">
       <label>ستحضر أي مناسبة؟</label>
-      <select id="rsvpEventType"><option value="both">كتب الكتاب والحنة والحنة والفرح</option><option value="wedding">الفرح فقط</option></select>
+      <select id="rsvpEventType"><option value="both">كتب الكتاب والحنة والفرح</option><option value="wedding">الفرح فقط</option></select>
     </div>
     <label>هل ستحضر؟</label>
     <select id="rsvpAttending">
@@ -542,7 +542,7 @@
     <div class="admin-sec-title">تأكيدات الحضور</div>
     <select id="adminRsvpFilter" class="admin-filter" onchange="renderAdminRsvp()">
       <option value="all">كل الدعوات</option>
-      <option value="both">كتب الكتاب والحنة والحنة والفرح</option>
+      <option value="both">كتب الكتاب والحنة والفرح</option>
       <option value="wedding">الفرح فقط</option>
     </select>
     <div id="adminRsvpList"></div>
@@ -639,7 +639,7 @@
     }
   }
 
-  // نوع الرابط: ?event=both (كتب الكتاب والحنة والحنة والفرح) أو ?event=wedding (الفرح فقط).
+  // نوع الرابط: ?event=both (كتب الكتاب والحنة والفرح) أو ?event=wedding (الفرح فقط).
   const queryParams = new URLSearchParams(window.location.search);
   const eventMode = (queryParams.get('event') === 'wedding' || queryParams.get('e') === 'w') ? 'wedding' : 'both';
   const eventConfig = eventMode === 'wedding' ? {
@@ -915,7 +915,7 @@
     rsvpEl.innerHTML=rsvpList.length ? '' : '<p class="admin-empty">لسه مفيش تأكيدات</p>';
     rsvpList.forEach(r => {
       const status=r.attending?'هيحضر':'معتذر';
-      const eventLabel=(r.event_type||'wedding')==='both'?'كتب الكتاب والحنة والحنة والفرح':'الفرح فقط';
+      const eventLabel=(r.event_type||'wedding')==='both'?'كتب الكتاب والحنة والفرح':'الفرح فقط';
       rsvpEl.innerHTML += `<div class="admin-item"><div class="a-name">${escapeHtml(r.name)} — ${status}</div><div class="a-meta">${eventLabel} · عدد الحضور: ${r.guest_count} · ${formatDate(r.created_at)}</div></div>`;
     });
   }
