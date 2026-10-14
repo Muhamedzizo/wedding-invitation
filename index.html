@@ -780,6 +780,7 @@
     const btn = document.getElementById('congratsSubmitBtn');
     btn.disabled = true; btn.textContent = 'جاري الإرسال...';
     let ok = false;
+    let row = null;
     try{
       const res = await fetch(SUPABASE_URL + '/rest/v1/congrats', {
         method: 'POST',
@@ -793,8 +794,8 @@
       ok = res.ok;
       if(ok){
         const inserted = await res.json();
-        const row = Array.isArray(inserted) ? inserted[0] : inserted;
-        if(row && row.created_at) congratsSeen.add(row.created_at);
+        row = Array.isArray(inserted) ? inserted[0] : inserted;
+        if(row && row.id) congratsSeen.add(String(row.id));
       }
     }catch(err){ ok = false; }
     btn.disabled = false; btn.textContent = 'إرسال التهنئة';
@@ -849,10 +850,10 @@
       const empty = document.getElementById('congratsEmpty');
       if(empty) empty.remove();
 
-      const newItems = list.filter(c => !congratsSeen.has(c.created_at));
+        const newItems = list.filter(c => !congratsSeen.has(String(c.id)));
       if(!newItems.length) return;
       newItems.slice().reverse().forEach(c => {
-        congratsSeen.add(c.created_at);
+        congratsSeen.add(String(c.id));
         addCongratsToWall(c);
       });
     }catch(err){
