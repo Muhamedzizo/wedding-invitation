@@ -828,7 +828,7 @@
     if(!supabaseReady()) return;
     try{
       const res = await fetch(
-        SUPABASE_URL + '/rest/v1/congrats?select=id,name,message,created_at,likes_count&is_hidden=eq.false&order=created_at.desc&_=' + Date.now(),
+        SUPABASE_URL + '/rest/v1/congrats?select=id,name,message,created_at,likes_count&is_hidden=eq.false&order=created_at.desc',
         {
           headers: {
             'apikey': SUPABASE_ANON_KEY
